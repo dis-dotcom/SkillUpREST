@@ -2,7 +2,7 @@
 
 using SkillUpREST.Services.Interfaces;
 
-public class UserDtoValidator : IUserDtoValidator
+public class UserDtoValidator : IUserValidator
 {
     public bool IsValidCreateUserDto(CreateUserDto createUserDto)
     {

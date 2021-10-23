@@ -1,6 +1,6 @@
 ﻿namespace SkillUpREST.Services.Interfaces;
 
-public interface IUserDtoValidator
+public interface IUserValidator
 {
     bool IsValidCreateUserDto(CreateUserDto dto);
 }

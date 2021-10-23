@@ -35,7 +35,7 @@ public class Startup
         services.AddSingleton<ICompanyRepository>(new CompanyRepositoryOnDrive(companyRepositoryPath));
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserBlockService, UserBlockService>();
-        services.AddScoped<IUserDtoValidator, UserDtoValidator>();
+        services.AddScoped<IUserValidator, UserDtoValidator>();
 
         services.AddControllers();
         services.AddSwaggerGen(c =>

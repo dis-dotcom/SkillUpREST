@@ -8,10 +8,10 @@ using System.Collections.Generic;
 
 public class UserService : IUserService
 {
-    private readonly IUserDtoValidator _userDtoValidator;
+    private readonly IUserValidator _userDtoValidator;
     private readonly IUserRepository _userRepository;
 
-    public UserService(IUserRepository userRepository, IUserDtoValidator userDtoValidator)
+    public UserService(IUserRepository userRepository, IUserValidator userDtoValidator)
     {
         _userRepository = userRepository;
         _userDtoValidator = userDtoValidator;
