@@ -1,5 +1,4 @@
 ﻿using SkillUpREST.Entity;
-using System;
 using System.Collections.Generic;
 
 namespace SkillUpREST.Services.Interfaces
