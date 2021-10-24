@@ -41,24 +41,21 @@ public class AdminCommonController : ControllerBase
                                  .First();
     }
 
-    public class DTO
+    public class CreateCompany
     {
         public string Name { get; set; }
     }
 
     [HttpPost]
-    public Company Post([FromBody] DTO dto)
+    public Company Post([FromBody] CreateCompany dto)
     {
-        var id = Guid.NewGuid();
-        var json = dto.ToString();
-
         var company = new Company
         {
-            Id = id,
+            Id = Guid.NewGuid(),
             Name = dto.Name
         };
 
-        _companyRepository.Insert(id, company);
+        _companyRepository.Insert(company.Id, company);
 
         return company;
     }
