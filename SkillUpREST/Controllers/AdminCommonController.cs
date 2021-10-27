@@ -29,7 +29,7 @@ public class AdminCommonController : ControllerBase
     public object Get(Guid id)
     {
         return _companyRepository.Find(company => company.Id == id)
-                                 .ToCompanyInfo();
+                                 .ToCompanyInfo() ?? NotFound();
     }
 
     [HttpPost("/company")]
