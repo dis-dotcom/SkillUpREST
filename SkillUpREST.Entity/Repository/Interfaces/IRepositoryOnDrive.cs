@@ -9,4 +9,3 @@ public interface IRepositoryOnDrive<T> : IRepository<T> where T : IEntity
 {
     string Location { get; }
 }
-
