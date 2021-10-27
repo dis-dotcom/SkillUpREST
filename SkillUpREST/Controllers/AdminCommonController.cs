@@ -6,11 +6,12 @@ using SkillUpREST.Entity.Repository.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
+
 [Route("api/admin")]
 [ApiController]
 public class AdminCommonController : ControllerBase
 {
-    private ICompanyRepository _companyRepository;
+    private readonly ICompanyRepository _companyRepository;
 
     public AdminCommonController(ICompanyRepository companyRepository)
     {
@@ -40,18 +41,13 @@ public class AdminCommonController : ControllerBase
 
         return company.ToCompanyInfo();
     }
-
-    public class CreateCompany
-    {
-        public string Name { get; set; }
-    }
 }
 
 public static class CompanyExt
 {
     public static object ToCompanyInfo(this Company company)
     {
-        return new
+        return company is null ? null : new
         {
             Id = company.Id,
             Name = company.Name
