@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class Company : EntityBase
 {
-    public Company(string name)
+    public Company(string name) : base()
     {
         Name = name;
     }

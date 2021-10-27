@@ -1,10 +1,10 @@
 ﻿namespace SkillUpREST.Controllers;
 
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 [Route("api/admin")]
 [ApiController]
@@ -20,17 +20,8 @@ public class AdminCommonController : ControllerBase
     [HttpGet("/company-list")]
     public IEnumerable<object> GetList()
     {
-        object ToCompanyInfo(Company company)
-        {
-            return new
-            {
-                Name = company.Name
-            };
-        }
-
         return _companyRepository.FindMany()
-                                 .ToArray()
-                                 .Select(ToCompanyInfo);
+                                 .Select(company => company.ToCompanyInfo());
     }
 
     [HttpGet("/company/{id}")]
@@ -40,21 +31,14 @@ public class AdminCommonController : ControllerBase
                                  .ToCompanyInfo();
     }
 
-    [HttpGet("/company")]
-    public object GetByName([FromQuery]string name)
+    [HttpPost("/company")]
+    public object Post([FromQuery] string name)
     {
-        return _companyRepository.Find(company => company.Name == name)?
-                                 .ToCompanyInfo();
-    }
-
-    [HttpPost]
-    public Company Post([FromBody] CreateCompany dto)
-    {
-        var company = new Company(dto.Name);
+        var company = new Company(name);
 
         _companyRepository.Insert(company);
 
-        return company;
+        return company.ToCompanyInfo();
     }
 
     public class CreateCompany
@@ -69,6 +53,7 @@ public static class CompanyExt
     {
         return new
         {
+            Id = company.Id,
             Name = company.Name
         };
     }
