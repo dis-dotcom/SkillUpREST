@@ -1,3 +1,5 @@
 .vs
 /SkillUpREST/bin/*
 /SkillUpREST/obj/*
+/SkillUpREST.Entity/bin/*
+/SkillUpREST.Entity/obj/*
