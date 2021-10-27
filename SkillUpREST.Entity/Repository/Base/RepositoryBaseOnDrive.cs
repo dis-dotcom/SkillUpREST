@@ -58,10 +58,8 @@ public class RepositoryBaseOnDrive<TEntity> : RepositoryBase<TEntity>, IReposito
     }
     private void InsertManyInternal(IEnumerable<TEntity> entities)
     {
-        foreach (var entity in entities)
-        {
-            Save(entity);
-        }
+        entities.ToList()
+                .ForEach(Save);
     }
     private void DeleteInternal(TEntity entity)
     {
@@ -73,62 +71,23 @@ public class RepositoryBaseOnDrive<TEntity> : RepositoryBase<TEntity>, IReposito
     }
     private void DeleteManyInternal(IEnumerable<TEntity> entities)
     {
-        foreach (var entity in entities)
-        {
-            DeleteFile(entity);
-        }
+        entities.ToList()
+                .ForEach(DeleteFile);
     }
     private TEntity FindInternal(params Predicate<TEntity>[] requirements)
     {
-        foreach (var filePath in Directory.GetFiles(Location))
-        {
-            TEntity entity = default;
-
-            if (File.Exists(filePath))
-            {
-                var json = File.ReadAllText(filePath);
-                var tmpEntity = EntityFromJson(json);
-
-                if (requirements.All(requirement => requirement(entity)))
-                {
-                    entity = tmpEntity;
-                }
-            }
-
-            if (entity.Equals(default))
-            {
-                continue;
-            }
-
-            return entity;
-        }
-
-        return default;
+        return Directory.GetFiles(Location).Where(File.Exists)
+                                           .Select(File.ReadAllText)
+                                           .Select(EntityFromJson)
+                                           .Where(entity => requirements.All(requirement => requirement(entity)))
+                                           .FirstOrDefault();
     }
     private IEnumerable<TEntity> FindManyInternal(params Predicate<TEntity>[] requirements)
     {
-        foreach (var filePath in Directory.GetFiles(Location))
-        {
-            TEntity entity = default;
-
-            if (File.Exists(filePath))
-            {
-                var json = File.ReadAllText(filePath);
-                var tmpEntity = EntityFromJson(json);
-
-                if (requirements.All(requirement => requirement(entity)))
-                {
-                    entity = tmpEntity;
-                }
-            }
-
-            if (entity.Equals(default))
-            {
-                continue;
-            }
-
-            yield return entity;
-        }
+        return Directory.GetFiles(Location).Where(File.Exists)
+                                           .Select(File.ReadAllText)
+                                           .Select(EntityFromJson)
+                                           .Where(entity => requirements.All(requirement => requirement(entity)));
     }
     #endregion
 

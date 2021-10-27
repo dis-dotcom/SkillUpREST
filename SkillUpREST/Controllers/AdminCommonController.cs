@@ -20,14 +20,30 @@ public class AdminCommonController : ControllerBase
     [HttpGet("/company-list")]
     public IEnumerable<object> GetList()
     {
+        object ToCompanyInfo(Company company)
+        {
+            return new
+            {
+                Name = company.Name
+            };
+        }
+
         return _companyRepository.FindMany()
-                                 .Select(company => company.ToCompanyInfo);
+                                 .ToArray()
+                                 .Select(ToCompanyInfo);
     }
 
     [HttpGet("/company/{id}")]
     public object Get(Guid id)
     {
         return _companyRepository.Find(company => company.Id == id)
+                                 .ToCompanyInfo();
+    }
+
+    [HttpGet("/company")]
+    public object GetByName([FromQuery]string name)
+    {
+        return _companyRepository.Find(company => company.Name == name)?
                                  .ToCompanyInfo();
     }
 
