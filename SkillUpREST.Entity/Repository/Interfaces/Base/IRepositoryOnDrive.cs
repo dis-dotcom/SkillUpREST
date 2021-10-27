@@ -5,7 +5,7 @@ using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository;
 
 
-public interface IRepositoryOnDrive<T> : IRepository<T> where T : IEntity
+public interface IRepositoryOnDrive<TEntity> : IRepository<TEntity> where TEntity : IEntity
 {
     string Location { get; }
 }

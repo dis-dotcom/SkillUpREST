@@ -1,10 +1,11 @@
 ﻿namespace SkillUpREST.Services;
 
 using SkillUpREST.Entity;
-using SkillUpREST.Repositories.Interfaces;
+using SkillUpREST.Entity.Repository.Interfaces;
 using SkillUpREST.Services.Exceptions;
 using SkillUpREST.Services.Interfaces;
 using System.Collections.Generic;
+
 
 public class UserService : IUserService
 {
@@ -24,12 +25,7 @@ public class UserService : IUserService
             throw new CreateUserDtoException("Invalid values in object <CreateUserDto> dto");
         }
 
-        var user = new User
-        {
-            Id = Guid.NewGuid(),
-            Name = dto.Name,
-            Hidden = false
-        };
+        var user = new User(Guid.NewGuid(), dto.Name);
 
         try
         {
@@ -46,15 +42,11 @@ public class UserService : IUserService
     {
         if (Exists(id))
         {
-            var user = _userRepository.GetById(id);
-            var updatedUser = new User
-            {
-                Id = id,
-                Name = dto.Name,
-                Hidden = user.Hidden
-            };
+            var user = _userRepository.Find(user => user.Id == id);
+            var updatedUser = new User(id, dto.Name);
 
-            _userRepository.Update(updatedUser);
+            _userRepository.DeleteById(id);
+            _userRepository.Insert(updatedUser);
 
             return updatedUser;
         }

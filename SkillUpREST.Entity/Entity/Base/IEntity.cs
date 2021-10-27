@@ -1,7 +1,8 @@
-﻿namespace SkillUpREST.Entity;
+﻿global using System;
+global using System.Linq;
 
 
-using System;
+namespace SkillUpREST.Entity;
 
 
 public interface IEntity

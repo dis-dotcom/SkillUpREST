@@ -1,6 +1,10 @@
 ﻿namespace SkillUpREST.Entity.Repository;
 
-public class CompanyRepositoryOnDrive : RepositoryBaseOnDrive<User>
+
+using SkillUpREST.Entity.Repository.Interfaces;
+
+
+internal class CompanyRepositoryOnDrive : RepositoryBaseOnDrive<Company>, ICompanyRepository
 {
     public CompanyRepositoryOnDrive(string repositoryPath) : base(repositoryPath)
     {

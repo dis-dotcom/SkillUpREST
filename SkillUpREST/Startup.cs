@@ -1,20 +1,23 @@
 namespace SkillUpREST;
 
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using SkillUpREST.Repositories.Interfaces;
-using SkillUpREST.Repositories.OnDrive;
+using SkillUpREST.Entity.Repository;
+using SkillUpREST.Entity.Repository.Interfaces;
 using SkillUpREST.Services;
 using SkillUpREST.Services.Interfaces;
-using System.IO;
+
 
 public static class App
 {
     public static readonly string Root = "E://SkillUp.Container";
+    public static readonly string UserRepository = $"{Root}/Users";
+    public static readonly string CompanyRepository = $"{Root}/Company";
 }
 
 public class Startup
@@ -28,11 +31,11 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        string userRepositoryPath = Path.Combine(App.Root, "Users");
-        string companyRepositoryPath = Path.Combine(App.Root, "Company");
+        var userRepository = Repository.ResolveUserRepository(("Location", App.UserRepository));
+        var companyRepository = Repository.ResolveCompanyRepository(("Location", App.CompanyRepository));
 
-        services.AddSingleton<IUserRepository>(new UserRepositoryOnDrive(userRepositoryPath));
-        services.AddSingleton<ICompanyRepository>(new CompanyRepositoryOnDrive(companyRepositoryPath));
+        services.AddSingleton<IUserRepository>(userRepository);
+        services.AddSingleton<ICompanyRepository>(companyRepository);
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserBlockService, UserBlockService>();
         services.AddScoped<IUserValidator, UserDtoValidator>();
