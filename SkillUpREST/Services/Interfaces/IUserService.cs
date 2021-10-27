@@ -13,9 +13,9 @@ namespace SkillUpREST.Services.Interfaces
         User DeleteUser(DeleteUserDto dto);
 
         // Special
-        User Get(params Func<User, bool>[] requirements);
+        User Get(params Predicate<User>[] requirements);
 
-        IEnumerable<User> GetAll(params Func<User, bool>[] requirements);
+        IEnumerable<User> GetAll(params Predicate<User>[] requirements);
     }
 
     public record CreateUserDto(string Name);

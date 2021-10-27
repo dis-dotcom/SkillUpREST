@@ -1,11 +1,10 @@
 ﻿namespace SkillUpREST.Controllers;
 
-
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository.Interfaces;
-using System.Collections;
-
+using System.Collections.Generic;
 
 [Route("api/admin")]
 [ApiController]
@@ -18,45 +17,43 @@ public class AdminCommonController : ControllerBase
         _companyRepository = companyRepository;
     }
 
-    object ToCompanyInfo(Company company)
-    {
-        return new
-        {
-            Name = company.Name
-        };
-    }
-
     [HttpGet("/company-list")]
-    public IEnumerable GetList()
+    public IEnumerable<object> GetList()
     {
-        return _companyRepository.Find()
-                                 .Select(ToCompanyInfo);
+        return _companyRepository.FindMany()
+                                 .Select(company => company.ToCompanyInfo);
     }
 
     [HttpGet("/company/{id}")]
     public object Get(Guid id)
     {
         return _companyRepository.Find(company => company.Id == id)
-                                 .Select(ToCompanyInfo)
-                                 .First();
+                                 .ToCompanyInfo();
+    }
+
+    [HttpPost]
+    public Company Post([FromBody] CreateCompany dto)
+    {
+        var company = new Company(dto.Name);
+
+        _companyRepository.Insert(company);
+
+        return company;
     }
 
     public class CreateCompany
     {
         public string Name { get; set; }
     }
+}
 
-    [HttpPost]
-    public Company Post([FromBody] CreateCompany dto)
+public static class CompanyExt
+{
+    public static object ToCompanyInfo(this Company company)
     {
-        var company = new Company
+        return new
         {
-            Id = Guid.NewGuid(),
-            Name = dto.Name
+            Name = company.Name
         };
-
-        _companyRepository.Insert(company.Id, company);
-
-        return company;
     }
 }

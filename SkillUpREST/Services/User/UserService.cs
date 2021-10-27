@@ -57,19 +57,18 @@ public class UserService : IUserService
     {
         if (Exists(dto.Id))
         {
-            var user = _userRepository.GetById(dto.Id);
+            var user = GetById(dto.Id);
 
-            _userRepository.Delete(dto.Id);
+            _userRepository.DeleteById(dto.Id);
 
             return user;
         }
 
         return null;
     }
+    public User Get(params Predicate<User>[] requirements) => _userRepository.Find(requirements);
+    public IEnumerable<User> GetAll(params Predicate<User>[] requirements) => _userRepository.FindMany(requirements);
 
-    public User Get(params Func<User, bool>[] requirements) => GetAll(requirements).FirstOrDefault();
-
-    public IEnumerable<User> GetAll(params Func<User, bool>[] requirements) => _userRepository.Get().Where(u => requirements.All(r => r(u)));
-
-    private bool Exists(Guid id) => _userRepository.GetById(id) is not null;
+    private bool Exists(Guid id) => GetById(id) is not null;
+    private User GetById(Guid id) => _userRepository.Find(user => user.Id == id);
 }

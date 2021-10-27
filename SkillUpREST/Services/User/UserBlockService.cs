@@ -1,6 +1,7 @@
 ﻿namespace SkillUpREST.Services;
 
 using SkillUpREST.Entity;
+using SkillUpREST.Entity.Repository.Interfaces;
 using SkillUpREST.Repositories.Interfaces;
 using SkillUpREST.Services.Interfaces;
 using System;
@@ -16,29 +17,29 @@ public class UserBlockService : IUserBlockService
 
     public void BlockUser(User user)
     {
-        user.Blocked = true;
+        // user.Blocked = true;
 
-        _userRepository.Update(user);
+        // _userRepository.Update(user);
     }
 
     public void BlockUser(Guid id)
     {
-        var user = _userRepository.GetById(id);
+        // var user = _userRepository.GetById(id);
 
-        BlockUser(user);
+        // BlockUser(user);
     }
 
     public void UnblockUser(User user)
     {
-        user.Blocked = false;
+        // user.Blocked = false;
 
-        _userRepository.Update(user);
+        // _userRepository.Update(user);
     }
 
     public void UnblockUser(Guid id)
     {
-        var user = _userRepository.GetById(id);
+        // var user = _userRepository.GetById(id);
 
-        UnblockUser(user);
+        // UnblockUser(user);
     }
 }

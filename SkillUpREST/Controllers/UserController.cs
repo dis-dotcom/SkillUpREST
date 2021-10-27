@@ -22,8 +22,7 @@ public class UserController : ControllerBase
         Id = user.Id,
         Name = user.Name,
         Age = default(object),
-        Gender = default(object),
-        Blocked = user.Blocked
+        Gender = default(object)
     };
 
     [HttpGet(Name = "GetUsers")]
