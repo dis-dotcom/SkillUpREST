@@ -1,6 +1,7 @@
 ﻿namespace SkillUpREST.Entity;
 
-public partial class User : EntityBase
+
+public class User : EntityBase
 {
     public string Name { get; }
 

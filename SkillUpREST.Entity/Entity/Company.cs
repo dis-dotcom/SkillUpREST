@@ -1,5 +1,8 @@
 ﻿namespace SkillUpREST.Entity;
+
+
 using System.Collections.Generic;
+
 
 public class Company : EntityBase
 {
