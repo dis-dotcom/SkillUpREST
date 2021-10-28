@@ -11,10 +11,12 @@ using System.Linq;
 [ApiController]
 public class AdminCommonController : ControllerBase
 {
+    private readonly IUserRepository _userRepository;
     private readonly ICompanyRepository _companyRepository;
 
-    public AdminCommonController(ICompanyRepository companyRepository)
+    public AdminCommonController(ICompanyRepository companyRepository, IUserRepository userRepository)
     {
+        _userRepository = userRepository;
         _companyRepository = companyRepository;
     }
 
@@ -35,11 +37,19 @@ public class AdminCommonController : ControllerBase
     [HttpPost("/company")]
     public object Post([FromQuery] string name)
     {
-        var company = new Company(name);
+        var company = new Company(Guid.NewGuid(), name);
 
         _companyRepository.Insert(company);
 
         return company.ToCompanyInfo();
+    }
+
+    [HttpGet("/company/{id}/employees")]
+    public object GetUsersFromCompany(Guid id)
+    {
+        var company = _companyRepository.Find(company => company.Id == id);
+
+        return company is null ? NotFound() : company.Employees.Select(user => user.ToUserInfo());
     }
 }
 
@@ -51,6 +61,18 @@ public static class CompanyExt
         {
             Id = company.Id,
             Name = company.Name
+        };
+    }
+}
+
+public static class UserExt
+{
+    public static object ToUserInfo(this User user)
+    {
+        return user is null ? null : new
+        {
+            Id = user.Id,
+            Name = user.Name
         };
     }
 }

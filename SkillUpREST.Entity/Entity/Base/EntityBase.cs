@@ -8,5 +8,10 @@ public abstract class EntityBase : IEntity
         Id = Guid.NewGuid();
     }
 
+    public EntityBase(Guid id)
+    {
+        Id = id;
+    }
+
     public Guid Id { get; protected set; }
 }
