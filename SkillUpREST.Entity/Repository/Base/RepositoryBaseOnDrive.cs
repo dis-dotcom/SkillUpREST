@@ -10,15 +10,23 @@ using System.Linq;
 
 public class RepositoryBaseOnDrive<TEntity> : RepositoryBase<TEntity>, IRepositoryOnDrive<TEntity> where TEntity : IEntity
 {
-    private Locker locker;
+    private readonly Locker locker;
+    private readonly object locationSync = new();
 
-    public RepositoryBaseOnDrive(string repositoryPath)
+    private string location;
+
+    public RepositoryBaseOnDrive(string path)
     {
-        locker = new Locker(new object());
-        Location = repositoryPath;
+        locker = new Locker(new());
+
+        SetLocation(path);
     }
 
-    public virtual string Location { get; protected set; }
+    public virtual string Location
+    {
+        get => GetLocation();
+        protected set => SetLocation(value);
+    }
 
     #region Public
     public override void Insert(TEntity entity)
@@ -100,9 +108,24 @@ public class RepositoryBaseOnDrive<TEntity> : RepositoryBase<TEntity>, IReposito
     private TEntity EntityFromJson(string json) => JsonConvert.DeserializeObject<TEntity>(json);
     private string JsonForEntity(TEntity entity) => JsonConvert.SerializeObject(entity, Formatting.Indented);
 
+    private void SetLocation(string location)
+    {
+        lock (locationSync)
+        {
+            this.location = location;
+        }
+    }
+    private string GetLocation()
+    {
+        lock (locationSync)
+        {
+            return location;
+        }
+    }
+
     private class Locker
     {
-        private object sync;
+        private readonly object sync;
 
         public Locker(object sync)
         {
@@ -120,7 +143,6 @@ public class RepositoryBaseOnDrive<TEntity> : RepositoryBase<TEntity>, IReposito
 
             return value;
         }
-
         public TOut UnderLock<TIn, TOut>(Func<TIn, TOut> function, TIn arg)
         {
             TOut value = default;
@@ -132,7 +154,6 @@ public class RepositoryBaseOnDrive<TEntity> : RepositoryBase<TEntity>, IReposito
 
             return value;
         }
-
         public void UnderLock(Action action)
         {
             lock (sync)

@@ -1,35 +1,34 @@
 ﻿namespace SkillUpREST.Entity.Repository;
 
 using SkillUpREST.Entity.Repository.Interfaces;
-using System;
 using System.Linq;
-
 
 public static class Repository
 {
-    public static IRepository<TEntity> Resolve<TEntity>(params (string Key, object Value)[] @params) where TEntity: IEntity
-    {
-        if (typeof(TEntity) == typeof(User))
-        {
-            var location = @params.First(it => it.Key == "Location").Value as string;
-
-            return new UserRepositoryOnDrive(location) as IRepository<TEntity>;
-        }
-
-        throw new Exception($"Can't resolve required Repository by type {typeof(TEntity)}");
-    }
-
-    public static IUserRepository ResolveUserRepository(params (string Key, object Value)[] @params)
+    public static T Resolve<T>(params (string Key, object Value)[] @params) where T: class
     {
         var location = @params.First(it => it.Key == "Location").Value as string;
-        
+
+        if (typeof(T) == typeof(IUserRepository))
+        {
+            return ResolveUserRepository(location) as T;
+        }
+
+        if (typeof(T) == typeof(ICompanyRepository))
+        {
+            return ResolveCompanyRepository(location) as T;
+        }
+
+        throw new Exception($"Can't resolve {typeof(T)}");
+    }
+
+    internal static IUserRepository ResolveUserRepository(string location)
+    {
         return new UserRepositoryOnDrive(location);
     }
 
-    public static ICompanyRepository ResolveCompanyRepository(params (string Key, object Value)[] @params)
+    internal static ICompanyRepository ResolveCompanyRepository(string location)
     {
-        var location = @params.First(it => it.Key == "Location").Value as string;
-
         return new CompanyRepositoryOnDrive(location);
     }
 }
