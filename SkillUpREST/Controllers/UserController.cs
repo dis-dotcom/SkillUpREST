@@ -24,7 +24,7 @@ public class UserController : ControllerBase
     public IEnumerable Get()
     {
         return _userRepository.FindMany()
-                              .Select(user => user.ToRepresentableUser);
+                              .Select(user => user.ToRepresentableUser());
     }
 
     [HttpGet("{id}", Name = "GetById")]
