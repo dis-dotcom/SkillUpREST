@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using SkillUpREST.Entity;
+using SkillUpREST.Entity.Repository.Interfaces;
 using SkillUpREST.Services.Exceptions;
 using SkillUpREST.Services.Interfaces;
 using System.Collections;
@@ -11,34 +12,33 @@ using System.Collections;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IUserRepository _userRepository;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IUserRepository userRepository)
     {
         _userService = userService;
+        _userRepository = userRepository;
     }
-
-    private object UserToRepresentableUser(User user) => new
-    {
-        Id = user.Id,
-        Name = user.Name,
-        Age = default(object),
-        Gender = default(object)
-    };
 
     [HttpGet(Name = "GetUsers")]
     public IEnumerable Get()
     {
-        return _userService.GetAll().Select(UserToRepresentableUser);
+        return _userRepository.FindMany()
+                              .Select(user => user.ToRepresentableUser);
     }
 
     [HttpGet("{id}", Name = "GetById")]
     public IActionResult Get(Guid id)
     {
-        var user = _userService.Get(user => user.Id == id);
+        var user = _userRepository.Find(user => user.Id == id)
+                                  .ToRepresentableUser();
 
-        return user is null ? NotFound() : Ok(UserToRepresentableUser(user));
+        return user is null
+            ? NotFound()
+            : Ok(user);
     }
 
+    // TODO: For refactoring
     [HttpPost(Name = "CreateUser")]
     public IActionResult Post([FromBody] CreateUserDto dto)
     {
@@ -59,6 +59,7 @@ public class UserController : ControllerBase
         }
     }
 
+    // TODO: For refactoring
     [HttpPut("{id}", Name = "UpdateUser")]
     public IActionResult Put(Guid id, [FromBody] UpdateUserDto dto)
     {
@@ -75,13 +76,39 @@ public class UserController : ControllerBase
     [HttpDelete("{id}", Name = "DeleteUserById")]
     public IActionResult Delete(Guid id)
     {
-        var deletedUser = _userService.DeleteUser(new DeleteUserDto(id));
+        var userForDelete = _userRepository.Find(user => user.Id == id);
 
-        if (deletedUser is null)
+        if (userForDelete is null)
         {
-            return NoContent();
+            return Ok();
         }
 
-        return Ok(UserToRepresentableUser(deletedUser));
+        // TODO: TRANSACTION!!!
+        _userRepository.DeleteById(id);
+
+        return Ok(userForDelete.ToDeletedUser());
+    }
+}
+
+internal static class UserEntityExt
+{
+    public static object ToRepresentableUser(this UserEntity user)
+    {
+        return user is null ? null : new
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Age = default(int?),
+            Gender = default(object)
+        };
+    }
+
+    public static object ToDeletedUser(this UserEntity user)
+    {
+        return user is null ? null : new
+        {
+            Id = user.Id,
+            Name = user.Name
+        };
     }
 }

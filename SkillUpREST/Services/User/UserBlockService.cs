@@ -2,20 +2,20 @@
 
 using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository.Interfaces;
-using SkillUpREST.Repositories.Interfaces;
 using SkillUpREST.Services.Interfaces;
 using System;
 
+// TODO: Required method Update for Repository
 public class UserBlockService : IUserBlockService
 {
-    private IUserRepository _userRepository;
+    private readonly IUserRepository _userRepository;
 
     public UserBlockService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
 
-    public void BlockUser(User user)
+    public void BlockUser(UserEntity user)
     {
         // user.Blocked = true;
 
@@ -29,7 +29,7 @@ public class UserBlockService : IUserBlockService
         // BlockUser(user);
     }
 
-    public void UnblockUser(User user)
+    public void UnblockUser(UserEntity user)
     {
         // user.Blocked = false;
 

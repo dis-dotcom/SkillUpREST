@@ -5,7 +5,7 @@ using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository;
 
 
-public interface IUserRepository : IRepository<User>
+public interface IUserRepository : IRepository<UserEntity>
 {
 
 }

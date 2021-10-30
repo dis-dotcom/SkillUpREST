@@ -6,16 +6,16 @@ namespace SkillUpREST.Services.Interfaces
     public interface IUserService
     {
         // Base
-        User CreateUser(CreateUserDto dto);
+        UserEntity CreateUser(CreateUserDto dto);
 
-        User UpdateUser(Guid id, UpdateUserDto dto);
+        UserEntity UpdateUser(Guid id, UpdateUserDto dto);
 
-        User DeleteUser(DeleteUserDto dto);
+        UserEntity DeleteUser(DeleteUserDto dto);
 
         // Special
-        User Get(params Predicate<User>[] requirements);
+        UserEntity Get(params Predicate<UserEntity>[] requirements);
 
-        IEnumerable<User> GetAll(params Predicate<User>[] requirements);
+        IEnumerable<UserEntity> GetAll(params Predicate<UserEntity>[] requirements);
     }
 
     public record CreateUserDto(string Name);

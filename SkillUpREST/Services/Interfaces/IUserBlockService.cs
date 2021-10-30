@@ -5,8 +5,8 @@ using SkillUpREST.Entity;
 public interface IUserBlockService
 {
     void BlockUser(Guid id);
-    void BlockUser(User user);
+    void BlockUser(UserEntity user);
 
     void UnblockUser(Guid id);
-    void UnblockUser(User user);
+    void UnblockUser(UserEntity user);
 }

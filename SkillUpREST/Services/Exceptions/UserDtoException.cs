@@ -1,9 +1,9 @@
 ﻿namespace SkillUpREST.Services.Exceptions;
 
 
-public class UserDtoException : Exception
+public abstract class UserDtoException : Exception
 {
-    public UserDtoException(string message) : base(message) { }
+    protected UserDtoException(string message) : base(message) { }
 }
 
 public class CreateUserDtoException : UserDtoException

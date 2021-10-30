@@ -6,7 +6,6 @@ using SkillUpREST.Services.Exceptions;
 using SkillUpREST.Services.Interfaces;
 using System.Collections.Generic;
 
-
 public class UserService : IUserService
 {
     private readonly IUserValidator _userDtoValidator;
@@ -18,14 +17,18 @@ public class UserService : IUserService
         _userDtoValidator = userDtoValidator;
     }
 
-    public User CreateUser(CreateUserDto dto)
+    public UserEntity CreateUser(CreateUserDto dto)
     {
         if (!_userDtoValidator.IsValidCreateUserDto(dto))
         {
             throw new CreateUserDtoException("Invalid values in object <CreateUserDto> dto");
         }
 
-        var user = new User(Guid.NewGuid(), dto.Name);
+        var user = new UserEntity()
+        {
+            Id = Guid.NewGuid(),
+            Name = dto.Name
+        };
 
         try
         {
@@ -38,12 +41,17 @@ public class UserService : IUserService
 
         return user;
     }
-    public User UpdateUser(Guid id, UpdateUserDto dto)
+    public UserEntity UpdateUser(Guid id, UpdateUserDto dto)
     {
         if (Exists(id))
         {
             var user = _userRepository.Find(user => user.Id == id);
-            var updatedUser = new User(id, dto.Name);
+            
+            var updatedUser = new UserEntity()
+            {
+                Id = id,
+                Name = dto.Name
+            };
 
             _userRepository.DeleteById(id);
             _userRepository.Insert(updatedUser);
@@ -53,7 +61,7 @@ public class UserService : IUserService
 
         return null;
     }
-    public User DeleteUser(DeleteUserDto dto)
+    public UserEntity DeleteUser(DeleteUserDto dto)
     {
         if (Exists(dto.Id))
         {
@@ -66,9 +74,9 @@ public class UserService : IUserService
 
         return null;
     }
-    public User Get(params Predicate<User>[] requirements) => _userRepository.Find(requirements);
-    public IEnumerable<User> GetAll(params Predicate<User>[] requirements) => _userRepository.FindMany(requirements);
+    public UserEntity Get(params Predicate<UserEntity>[] requirements) => _userRepository.Find(requirements);
+    public IEnumerable<UserEntity> GetAll(params Predicate<UserEntity>[] requirements) => _userRepository.FindMany(requirements);
 
     private bool Exists(Guid id) => GetById(id) is not null;
-    private User GetById(Guid id) => _userRepository.Find(user => user.Id == id);
+    private UserEntity GetById(Guid id) => _userRepository.Find(user => user.Id == id);
 }

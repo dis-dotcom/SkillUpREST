@@ -5,5 +5,5 @@ using SkillUpREST.Entity;
 
 public static class UserExt
 {
-    public static string ToJson(User user) => JsonConvert.SerializeObject(user, Formatting.Indented);
+    public static string ToJson(UserEntity user) => JsonConvert.SerializeObject(user, Formatting.Indented);
 }

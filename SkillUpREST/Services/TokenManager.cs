@@ -2,6 +2,7 @@
 
 namespace SkillUpREST.Services
 {
+    [Obsolete]
     public static class TokenManager
     {
         private static List<Guid> tokens = new();

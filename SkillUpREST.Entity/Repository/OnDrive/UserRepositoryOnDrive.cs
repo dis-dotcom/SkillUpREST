@@ -4,7 +4,7 @@
 using SkillUpREST.Entity.Repository.Interfaces;
 
 
-internal class UserRepositoryOnDrive : RepositoryBaseOnDrive<User>, IUserRepository
+internal class UserRepositoryOnDrive : RepositoryBaseOnDrive<UserEntity>, IUserRepository
 {
     public UserRepositoryOnDrive(string repositoryPath) : base(repositoryPath)
     {

@@ -37,7 +37,14 @@ public class AdminCommonController : ControllerBase
     [HttpPost("/company")]
     public object Post([FromQuery] string name)
     {
-        var company = new Company(Guid.NewGuid(), name);
+        Guid? ownerId = null;
+
+        var company = new CompanyEntity
+        {
+            Id = Guid.NewGuid(),
+            Name = name,
+            OwnerId = ownerId
+        };
 
         _companyRepository.Insert(company);
 
@@ -49,15 +56,34 @@ public class AdminCommonController : ControllerBase
     {
         var company = _companyRepository.Find(company => company.Id == id);
 
-        return company is null ? NotFound() : company.Employees.Select(user => user.ToUserInfo());
+        return company is null
+            ? NotFound()
+            : _userRepository.FindMany(user => user.CompanyId == id)
+                             .Select(user => user.ToUserInfo());
     }
 
     // TODO: Bind user to company
     [HttpPost("/company/{companyId}/employees/{userId}")]
-    public IActionResult BindUserToCompany(Guid companyId, Guid userId)
+    public IActionResult BindUserToCompany(Guid userId, Guid companyId)
     {
         var user = _userRepository.Find(user => user.Id == userId);
         var company = _companyRepository.Find(company => company.Id == companyId);
+
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        if (company is null)
+        {
+            return NotFound();
+        }
+
+        user.CompanyId = companyId;
+
+        // TODO: TRANSACTION!!!
+        _userRepository.DeleteById(userId);
+        _userRepository.Insert(user);
 
         return Ok();
     }
@@ -65,19 +91,19 @@ public class AdminCommonController : ControllerBase
 
 public static class CompanyExt
 {
-    public static object ToCompanyInfo(this Company company)
+    public static object ToCompanyInfo(this CompanyEntity company)
     {
         return company is null ? null : new
         {
             Id = company.Id,
-            Name = company.Name
+            Name = company.Name ?? string.Empty
         };
     }
 }
 
 public static class UserExt
 {
-    public static object ToUserInfo(this User user)
+    public static object ToUserInfo(this UserEntity user)
     {
         return user is null ? null : new
         {

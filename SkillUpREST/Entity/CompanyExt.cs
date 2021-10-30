@@ -3,12 +3,16 @@
 using Newtonsoft.Json;
 using SkillUpREST.Entity;
 
+[Obsolete]
 public static class CompanyExt
 {
-    public static string ToJson(this Company company) => JsonConvert.SerializeObject(company, Formatting.Indented);
+    [Obsolete]
+    public static string ToJson(this CompanyEntity company) => JsonConvert.SerializeObject(company, Formatting.Indented);
 }
 
+[Obsolete]
 public static class StringExt
 {
+    [Obsolete]
     public static T FromJson<T>(this string json) => JsonConvert.DeserializeObject<T>(json);
 }
