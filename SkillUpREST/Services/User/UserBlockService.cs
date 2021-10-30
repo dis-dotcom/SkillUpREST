@@ -24,9 +24,14 @@ public class UserBlockService : IUserBlockService
 
     public void BlockUser(Guid id)
     {
-        // var user = _userRepository.GetById(id);
+        var user = _userRepository.Find(user => user.Id == id);
 
-        // BlockUser(user);
+        if (user is not null)
+        {
+            user.Blocked = true;
+            _userRepository.DeleteById(id);
+            _userRepository.Insert(user);
+        }
     }
 
     public void UnblockUser(UserEntity user)
@@ -38,8 +43,13 @@ public class UserBlockService : IUserBlockService
 
     public void UnblockUser(Guid id)
     {
-        // var user = _userRepository.GetById(id);
+        var user = _userRepository.Find(user => user.Id == id);
 
-        // UnblockUser(user);
+        if (user is not null)
+        {
+            user.Blocked = false;
+            _userRepository.DeleteById(id);
+            _userRepository.Insert(user);
+        }
     }
 }

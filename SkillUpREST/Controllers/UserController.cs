@@ -27,6 +27,24 @@ public class UserController : ControllerBase
                               .Select(user => user.ToRepresentableUser());
     }
 
+    [HttpGet("any", Name = "GetAny")]
+    public IActionResult GetAny()
+    {
+        int index;
+        object user = null;
+        var users = (_userRepository.FindMany() ?? Array.Empty<UserEntity>()).ToArray();
+
+        if (users.Length > 0)
+        {
+            index = new Random().Next(0, users.Length);
+            user = users[index].ToRepresentableUser();
+        }
+
+        return user is null
+            ? NotFound()
+            : Ok(user);
+    }
+
     [HttpGet("{id}", Name = "GetById")]
     public IActionResult Get(Guid id)
     {
@@ -98,8 +116,10 @@ internal static class UserEntityExt
         {
             Id = user.Id,
             Name = user.Name,
+            Blocked = user.Blocked,
             Age = default(int?),
-            Gender = default(object)
+            Gender = default(object),
+            Created = user.Created
         };
     }
 

@@ -15,7 +15,7 @@ public class DashboardController : ControllerBase
     private string SignInPath => Path.Combine(App.Root, "signin.html");
     private string JSApiPath => Path.Combine(App.Root, "js/Api.js");
     private string JSCorePath => Path.Combine(App.Root, "js/core.js");
-    private string JSReportComponentPath => Path.Combine(App.Root, "js/reportComponent.js");
+    private string JSReportComponentPath => Path.Combine(App.Root, "js/usersComponent.js");
     private string JSNetPath => Path.Combine(App.Root, "js/Net.js");
 
     private IUserBlockService _userBlockService;
@@ -81,7 +81,7 @@ public class DashboardController : ControllerBase
         return Content(content, "application/json", Encoding.UTF8);
     }
 
-    [HttpGet("/js/reportComponent.js")]
+    [HttpGet("/js/usersComponent.js")]
     public ActionResult GetReportComponent()
     {
         var content = ReadAllText(JSReportComponentPath);
