@@ -5,7 +5,7 @@ using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository.Interfaces;
 using SkillUpREST.Services.Exceptions;
 using SkillUpREST.Services.Interfaces;
-using System.Collections;
+using System.Collections.Generic;
 
 [ApiController]
 [Route("api/v1/users")]
@@ -21,7 +21,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet(Name = "GetUsers")]
-    public IEnumerable Get()
+    public IEnumerable<object> Get()
     {
         return _userRepository.FindMany()
                               .Select(user => user.ToRepresentableUser());
