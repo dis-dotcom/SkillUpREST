@@ -51,6 +51,16 @@ public class AdminCommonController : ControllerBase
 
         return company is null ? NotFound() : company.Employees.Select(user => user.ToUserInfo());
     }
+
+    // TODO: Bind user to company
+    [HttpPost("/company/{companyId}/employees/{userId}")]
+    public IActionResult BindUserToCompany(Guid companyId, Guid userId)
+    {
+        var user = _userRepository.Find(user => user.Id == userId);
+        var company = _companyRepository.Find(company => company.Id == companyId);
+
+        return Ok();
+    }
 }
 
 public static class CompanyExt

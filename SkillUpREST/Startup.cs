@@ -12,12 +12,11 @@ using SkillUpREST.Entity.Repository.Interfaces;
 using SkillUpREST.Services;
 using SkillUpREST.Services.Interfaces;
 
-
 public static class App
 {
     public static readonly string Root = "E://SkillUp.Container";
-    public static readonly string UserRepository = $"{Root}/Users";
-    public static readonly string CompanyRepository = $"{Root}/Company";
+    public static string UserRepository => $"{Root}/Users";
+    public static string CompanyRepository => $"{Root}/Company";
 }
 
 public class Startup
