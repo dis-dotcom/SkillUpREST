@@ -37,18 +37,9 @@ public class AdminCommonController : ControllerBase
     [HttpPost("/company")]
     public object Post([FromQuery] string name)
     {
-        Guid? ownerId = null;
+        var company = _companyService.Create(name);
 
-        var company = new CompanyEntity
-        {
-            Id = Guid.NewGuid(),
-            Name = name,
-            OwnerId = ownerId
-        };
-
-        _companyService.Repository.Insert(company);
-
-        return company.ToCompanyInfo();
+        return company;
     }
 
     [HttpGet("/company/{id}/employees")]

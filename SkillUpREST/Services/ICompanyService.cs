@@ -8,5 +8,6 @@ namespace SkillUpREST.Services
         ICompanyRepository Repository { get; }
         Company? GetCompanyById(Guid id);
         IEnumerable<Company> GetCompanies();
+        Company Create(string name);
     }
 }

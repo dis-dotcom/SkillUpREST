@@ -17,6 +17,26 @@ namespace SkillUpREST.Services
 
         public ICompanyRepository Repository => _companyRepository;
 
+        public Company Create(string name)
+        {
+            var company = new Company
+            {
+                Id = Guid.NewGuid(),
+                Name = name
+            };
+
+            var entity = new CompanyEntity
+            {
+                Id = company.Id,
+                Name = company.Name,
+                OwnerId = null
+            };
+
+            _companyRepository.Insert(entity);
+
+            return company;
+        }
+
         public IEnumerable<Company> GetCompanies()
         {
             return _companyRepository.FindMany().Select(Company.From);
