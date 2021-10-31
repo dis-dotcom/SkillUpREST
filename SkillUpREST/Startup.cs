@@ -30,9 +30,10 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        // I do not understand motivation here
         var userRepository = Repository.Resolve<IUserRepository>(("Location", App.UserRepository));
         var companyRepository = Repository.Resolve<ICompanyRepository>(("Location", App.CompanyRepository));
-
+        
         services.AddSingleton<IUserRepository>(userRepository);
         services.AddSingleton<ICompanyRepository>(companyRepository);
         services.AddScoped<IUserService, UserService>();

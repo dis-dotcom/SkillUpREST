@@ -10,6 +10,7 @@ namespace SkillUpREST.Controllers;
 [ApiController]
 public class DashboardController : ControllerBase
 {
+    // move this variables to static class
     private string IndexPath => Path.Combine(App.Root, "index.html");
     private string StylesPath => Path.Combine(App.Root, "styles.css");
     private string SignInPath => Path.Combine(App.Root, "signin.html");
