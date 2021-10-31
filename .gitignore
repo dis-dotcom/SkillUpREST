@@ -1,4 +1,5 @@
 .vs
+.idea
 /SkillUpREST/bin/*
 /SkillUpREST/obj/*
 /SkillUpREST.Entity/bin/*
