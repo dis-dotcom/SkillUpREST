@@ -1,9 +1,9 @@
-﻿namespace SkillUpREST.Services;
+﻿namespace SkillUpREST.Models;
 
 using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository.Interfaces;
-using SkillUpREST.Services.Exceptions;
-using SkillUpREST.Services.Interfaces;
+using SkillUpREST.Models.Exceptions;
+using SkillUpREST.Models.Interfaces;
 using System.Collections.Generic;
 
 public class UserService : IUserService

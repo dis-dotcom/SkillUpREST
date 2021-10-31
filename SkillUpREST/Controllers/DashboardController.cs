@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using SkillUpREST.Services.Interfaces;
+using SkillUpREST.Models.Interfaces;
 using static System.IO.File;
 
 namespace SkillUpREST.Controllers;

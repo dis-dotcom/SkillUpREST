@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SkillUpREST.Services;
+using SkillUpREST.Models;
 using System.Collections.Generic;
 
 #nullable enable

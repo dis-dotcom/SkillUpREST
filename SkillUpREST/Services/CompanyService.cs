@@ -2,7 +2,7 @@
 using SkillUpREST.Entity.Repository.Interfaces;
 using System.Collections.Generic;
 
-namespace SkillUpREST.Services
+namespace SkillUpREST.Models
 {
     public class CompanyService : ICompanyService
     {
@@ -52,21 +52,6 @@ namespace SkillUpREST.Services
             }
 
             return Company.From(company);
-        }
-    }
-
-    public struct Company
-    {
-        public Guid Id { get; init; }
-        public string Name { get; init; }
-
-        public static Company From(CompanyEntity entity)
-        {
-            return new Company
-            {
-                Id = entity.Id,
-                Name = entity.Name
-            };
         }
     }
 }

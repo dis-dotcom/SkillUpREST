@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SkillUpREST.Services
+namespace SkillUpREST.Models
 {
     [Obsolete]
     public static class TokenManager

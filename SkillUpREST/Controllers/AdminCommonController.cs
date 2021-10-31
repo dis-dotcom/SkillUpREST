@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository.Interfaces;
-using SkillUpREST.Services;
+using SkillUpREST.Models;
 using System.Collections.Generic;
 using System.Linq;
 

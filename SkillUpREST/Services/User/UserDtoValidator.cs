@@ -1,6 +1,6 @@
-﻿namespace SkillUpREST.Services;
+﻿namespace SkillUpREST.Models;
 
-using SkillUpREST.Services.Interfaces;
+using SkillUpREST.Models.Interfaces;
 
 public class UserDtoValidator : IUserValidator
 {

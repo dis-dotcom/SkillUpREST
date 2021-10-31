@@ -1,4 +1,4 @@
-﻿namespace SkillUpREST.Services.Exceptions;
+﻿namespace SkillUpREST.Models.Exceptions;
 
 
 public abstract class UserDtoException : Exception

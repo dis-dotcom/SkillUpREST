@@ -1,7 +1,7 @@
 ﻿using SkillUpREST.Entity.Repository.Interfaces;
 using System.Collections.Generic;
 
-namespace SkillUpREST.Services
+namespace SkillUpREST.Models
 {
     public interface ICompanyService
     {

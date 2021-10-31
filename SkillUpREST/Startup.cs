@@ -9,8 +9,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SkillUpREST.Entity.Repository;
 using SkillUpREST.Entity.Repository.Interfaces;
-using SkillUpREST.Services;
-using SkillUpREST.Services.Interfaces;
+using SkillUpREST.Models;
+using SkillUpREST.Models.Interfaces;
 
 public static class App
 {

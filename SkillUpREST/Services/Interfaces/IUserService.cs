@@ -1,7 +1,7 @@
 ﻿using SkillUpREST.Entity;
 using System.Collections.Generic;
 
-namespace SkillUpREST.Services.Interfaces
+namespace SkillUpREST.Models.Interfaces
 {
     public interface IUserService
     {

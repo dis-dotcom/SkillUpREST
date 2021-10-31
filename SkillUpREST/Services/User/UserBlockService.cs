@@ -1,8 +1,8 @@
-﻿namespace SkillUpREST.Services;
+﻿namespace SkillUpREST.Models;
 
 using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository.Interfaces;
-using SkillUpREST.Services.Interfaces;
+using SkillUpREST.Models.Interfaces;
 using System;
 
 // TODO: Required method Update for Repository

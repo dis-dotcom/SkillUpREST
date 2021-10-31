@@ -1,4 +1,4 @@
-﻿namespace SkillUpREST.Services.Interfaces;
+﻿namespace SkillUpREST.Models.Interfaces;
 
 using SkillUpREST.Entity;
 
