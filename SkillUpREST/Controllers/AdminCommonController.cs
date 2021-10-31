@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SkillUpREST.Entity;
 using SkillUpREST.Entity.Repository.Interfaces;
+using SkillUpREST.Services;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,20 +16,20 @@ public class AdminCommonController : ControllerBase
     // create separated layer of services, where all BLL will be encapsulated
     private readonly IUserRepository _userRepository;
     private readonly ICompanyRepository _companyRepository;
-    
+    private readonly ICompanyService _companyService;
+
     // WARNING: consider not to write your own DB context (repository), it is useless codebase
-    public AdminCommonController(ICompanyRepository companyRepository, IUserRepository userRepository)
+    public AdminCommonController(ICompanyRepository companyRepository, IUserRepository userRepository, ICompanyService companyService)
     {
         _userRepository = userRepository;
         _companyRepository = companyRepository;
+        _companyService = companyService;
     }
 
     [HttpGet("/company-list")]
     public IEnumerable<object> GetList()
     {
-        // move such selections to the services layer
-        return _companyRepository.FindMany()
-                                 .Select(company => company.ToCompanyInfo());
+        return _companyService.GetCompanies(entity => entity.ToCompanyInfo());
     }
 
     [HttpGet("/company/{id}")]

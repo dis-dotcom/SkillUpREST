@@ -36,6 +36,7 @@ public class Startup
         
         services.AddSingleton<IUserRepository>(userRepository);
         services.AddSingleton<ICompanyRepository>(companyRepository);
+        services.AddScoped<ICompanyService, CompanyService>(); 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserBlockService, UserBlockService>();
         services.AddScoped<IUserValidator, UserDtoValidator>();
