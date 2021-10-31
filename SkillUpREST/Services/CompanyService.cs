@@ -4,23 +4,49 @@ using System.Collections.Generic;
 
 namespace SkillUpREST.Services
 {
-    public interface ICompanyService
-    {
-        IEnumerable<T> GetCompanies<T>(Func<CompanyEntity, T> convert);
-    }
-
     public class CompanyService : ICompanyService
     {
+        private readonly IUserRepository _userRepository;
         private readonly ICompanyRepository _companyRepository;
 
-        public CompanyService(ICompanyRepository companyRepository)
+        public CompanyService(ICompanyRepository companyRepository, IUserRepository userRepository)
         {
+            _userRepository = userRepository;
             _companyRepository = companyRepository;
         }
 
-        public IEnumerable<T> GetCompanies<T>(Func<CompanyEntity, T> convert)
+        public ICompanyRepository Repository => _companyRepository;
+
+        public IEnumerable<Company> GetCompanies()
         {
-            return _companyRepository.FindMany().Select(convert);
+            return _companyRepository.FindMany().Select(Company.From);
+        }
+
+        public Company? GetCompanyById(Guid id)
+        {
+            var company = _companyRepository.Find(company => company.Id == id);
+
+            if (company is null)
+            {
+                return null;
+            }
+
+            return Company.From(company);
+        }
+    }
+
+    public struct Company
+    {
+        public Guid Id { get; init; }
+        public string Name { get; init; }
+
+        public static Company From(CompanyEntity entity)
+        {
+            return new Company
+            {
+                Id = entity.Id,
+                Name = entity.Name
+            };
         }
     }
 }

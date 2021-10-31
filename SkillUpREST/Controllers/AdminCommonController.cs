@@ -12,31 +12,26 @@ using System.Linq;
 [ApiController]
 public class AdminCommonController : ControllerBase
 {
-    // consider not to inject repositories
-    // create separated layer of services, where all BLL will be encapsulated
     private readonly IUserRepository _userRepository;
-    private readonly ICompanyRepository _companyRepository;
     private readonly ICompanyService _companyService;
 
-    // WARNING: consider not to write your own DB context (repository), it is useless codebase
-    public AdminCommonController(ICompanyRepository companyRepository, IUserRepository userRepository, ICompanyService companyService)
+    public AdminCommonController(IUserRepository userRepository, ICompanyService companyService)
     {
         _userRepository = userRepository;
-        _companyRepository = companyRepository;
         _companyService = companyService;
     }
 
     [HttpGet("/company-list")]
-    public IEnumerable<object> GetList()
-    {
-        return _companyService.GetCompanies(entity => entity.ToCompanyInfo());
-    }
+    public IEnumerable<Company> GetList() => _companyService.GetCompanies();
 
     [HttpGet("/company/{id}")]
-    public object Get(Guid id)
+    public IActionResult Get(Guid id)
     {
-        return _companyRepository.Find(company => company.Id == id)
-                                 .ToCompanyInfo() ?? NotFound();
+        var company = _companyService.GetCompanyById(id);
+
+        return company is null
+            ? NotFound()
+            : Ok(company);
     }
 
     [HttpPost("/company")]
@@ -51,7 +46,7 @@ public class AdminCommonController : ControllerBase
             OwnerId = ownerId
         };
 
-        _companyRepository.Insert(company);
+        _companyService.Repository.Insert(company);
 
         return company.ToCompanyInfo();
     }
@@ -59,7 +54,7 @@ public class AdminCommonController : ControllerBase
     [HttpGet("/company/{id}/employees")]
     public object GetUsersFromCompany(Guid id)
     {
-        var company = _companyRepository.Find(company => company.Id == id);
+        var company = _companyService.Repository.Find(company => company.Id == id);
 
         return company is null
             ? NotFound()
@@ -72,7 +67,7 @@ public class AdminCommonController : ControllerBase
     public IActionResult BindUserToCompany(Guid userId, Guid companyId)
     {
         var user = _userRepository.Find(user => user.Id == userId);
-        var company = _companyRepository.Find(company => company.Id == companyId);
+        var company = _companyService.Repository.Find(company => company.Id == companyId);
 
         if (user is null)
         {
