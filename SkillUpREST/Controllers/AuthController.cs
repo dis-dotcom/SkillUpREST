@@ -22,6 +22,12 @@ public class AuthController : ControllerBase
 
         return Unauthorized();
     }
+
+    [HttpPost("signout")]
+    public IActionResult Logout()
+    {
+        return Ok();
+    }
 }
 
 public class UserIdentity
