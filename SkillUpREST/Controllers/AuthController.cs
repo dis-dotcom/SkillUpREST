@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SkillUpREST.Entity;
 
 
-[Route("api/auth")]
+[Route("api")]
 [ApiController]
 public class AuthController : ControllerBase
 {
