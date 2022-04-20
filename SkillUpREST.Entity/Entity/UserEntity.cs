@@ -6,5 +6,4 @@ public class UserEntity : EntityBase
     public string Name { get; set; }
     public Guid? CompanyId { get; set; }
     public bool Blocked { get; set; }
-    public DateTime? Created { get; set; }
 }

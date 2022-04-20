@@ -14,7 +14,7 @@ using SkillUpREST.Models.Interfaces;
 
 public static class App
 {
-    public static readonly string Root = "E://SkillUp.Container";
+    public static readonly string Root = "E://C#/SkillUp.Container";
     public static string UserRepository => $"{Root}/Users";
     public static string CompanyRepository => $"{Root}/Company";
 }
@@ -30,7 +30,6 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        // I do not understand motivation here
         var userRepository = Repository.Resolve<IUserRepository>(("Location", App.UserRepository));
         var companyRepository = Repository.Resolve<ICompanyRepository>(("Location", App.CompanyRepository));
         
